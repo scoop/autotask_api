@@ -1,0 +1,4 @@
+*.csv
+.DS_Store
+.ruby-version
+sample_query.rb
