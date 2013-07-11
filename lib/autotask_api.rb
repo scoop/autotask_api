@@ -1,4 +1,8 @@
+require 'active_support/core_ext/class/attribute'
+require 'active_support/core_ext/string/inflections'
 require 'savon'
 require 'nokogiri'
 require 'autotask_api/client'
 require 'autotask_api/query_xml'
+require 'autotask_api/entity'
+require 'autotask_api/ticket'
