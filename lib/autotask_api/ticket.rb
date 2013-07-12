@@ -3,7 +3,7 @@ module AutotaskAPI
     self.fields = [ :assigned_resource_id, :ticket_number, :title, :description, :status ]
 
     def assigned_resource
-      return '' if assigned_resource_id.blank?
+      return if assigned_resource_id.blank?
       Resource.find(assigned_resource_id)
     end
 
