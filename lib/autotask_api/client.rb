@@ -15,23 +15,20 @@ module AutotaskAPI
     end
 
     def response
-      @response ||= savon_client.call :query, message: query,
+      savon_client.call :query, message: query,
         attributes: { xmlns: NAMESPACE }
     end
 
     def entities_for(query)
       self.query = query
-      Entity.client = self
-      begin
-        entities = response.xpath '//Autotask:Entity',
-          Autotask: NAMESPACE
+      Entity.client ||= self
 
-        klass = ('AutotaskAPI::' + entities.first.attribute('type').to_s).constantize
-        entities.collect do |entity|
-          klass.new entity
-        end
-      rescue NoMethodError
-        []
+      entities = response.xpath '//Autotask:Entity',
+        Autotask: NAMESPACE
+
+      klass = ('AutotaskAPI::' + entities.first.attribute('type').to_s).constantize
+      entities.collect do |entity|
+        klass.new entity
       end
     end
 

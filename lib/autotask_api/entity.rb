@@ -1,13 +1,13 @@
 module AutotaskAPI
   class Entity
-    class_attribute :fields, :client
+    class_attribute :fields, :client, :find_cache
     attr_accessor :attributes
 
     def initialize(xml)
       self.attributes = {}
       fields.each do |field|
-        attributes[field] = xml.at_xpath("Autotask:#{field.to_s.camelize}",
-          Autotask: Client::NAMESPACE).text.strip
+        attributes[field] = xml.at_xpath("Autotask:#{field.to_s.camelize.gsub(/Id$/, 'ID')}",
+          Autotask: Client::NAMESPACE).text.strip rescue ''
       end
       attributes
     end
@@ -18,6 +18,19 @@ module AutotaskAPI
       else
         super
       end
+    end
+
+
+    def self.find(id)
+      raise "No initialized client!" unless client
+      self.find_cache ||= {}
+
+      query = AutotaskAPI::QueryXML.new do |query|
+        query.entity = self.to_s.demodulize
+        query.field = 'id'
+        query.expression = id
+      end
+      find_cache[id] ||= client.entities_for(query).first
     end
   end
 end
