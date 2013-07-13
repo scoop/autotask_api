@@ -1,6 +1,6 @@
 module AutotaskAPI
   class Ticket < Entity
-    self.fields = [ :assigned_resource_id, :ticket_number, :title, :description, :status ]
+    self.fields = [ :account_id, :assigned_resource_id, :ticket_number, :title, :description, :status ]
 
     def assigned_resource
       return if assigned_resource_id.blank?

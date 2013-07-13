@@ -11,7 +11,7 @@ module AutotaskAPI
         c.pretty_print_xml true
         c.log false
       end
-      self
+      Entity.client ||= self
     end
 
     def response
@@ -21,7 +21,6 @@ module AutotaskAPI
 
     def entities_for(query)
       self.query = query
-      Entity.client ||= self
 
       entities = response.xpath '//Autotask:Entity',
         Autotask: NAMESPACE

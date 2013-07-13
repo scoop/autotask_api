@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    autotask_api (0.0.1)
+    autotask_api (0.0.3)
       activesupport (~> 3.2.0)
       savon (~> 2.0)
 
