@@ -1,9 +1,10 @@
 module AutotaskAPI
   class Entity
     class_attribute :fields, :client, :find_cache
-    attr_accessor :attributes
+    attr_accessor :attributes, :raw_xml
 
     def initialize(xml)
+      self.raw_xml = xml
       self.attributes = {}
       fields.each do |field|
         attributes[field] = xml.at_xpath("Autotask:#{field.to_s == 'id' ? 'id' : field.to_s.camelize.gsub(/Id$/, 'ID')}",

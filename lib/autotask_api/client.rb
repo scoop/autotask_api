@@ -19,11 +19,18 @@ module AutotaskAPI
         attributes: { xmlns: NAMESPACE }
     end
 
+    def update(xml)
+      savon_client.call :update, message: "<Entities>#{xml}</Entities>",
+        attributes: { xmlns: NAMESPACE }
+    end
+
     def entities_for(query)
       self.query = query
 
       entities = response.xpath '//Autotask:Entity',
         Autotask: NAMESPACE
+
+      return [] if entities.blank?
 
       klass = ('AutotaskAPI::' + entities.first.attribute('type').to_s).constantize
       entities.collect do |entity|
