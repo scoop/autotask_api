@@ -1,7 +1,7 @@
 module AutotaskAPI
   class Client
     NAMESPACE = 'http://autotask.net/ATWS/v1_5/'
-    attr_accessor :savon_client, :wsdl, :basic_auth, :query
+    attr_accessor :savon_client, :wsdl, :basic_auth, :query, :log
 
     def initialize
       yield self
@@ -9,7 +9,7 @@ module AutotaskAPI
         c.basic_auth basic_auth
         c.wsdl wsdl
         c.pretty_print_xml true
-        c.log false
+        c.log log
       end
       Entity.client ||= self
     end
@@ -21,6 +21,11 @@ module AutotaskAPI
 
     def update(xml)
       savon_client.call :update, message: "<Entities>#{xml}</Entities>",
+        attributes: { xmlns: NAMESPACE }
+    end
+
+    def create(xml)
+      savon_client.call :create, message: "<Entities>#{xml}</Entities>",
         attributes: { xmlns: NAMESPACE }
     end
 

@@ -14,5 +14,9 @@ module AutotaskAPI
     def full_name
       [ first_name, last_name ].join(' ')
     end
+
+    def firstname_lastname_initial
+      "#{first_name} #{last_name[0]}."
+    end
   end
 end
