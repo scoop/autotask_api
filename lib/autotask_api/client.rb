@@ -9,7 +9,7 @@ module AutotaskAPI
         c.basic_auth basic_auth
         c.wsdl wsdl
         c.pretty_print_xml true
-        c.log log
+        c.log !!log
       end
       Entity.client ||= self
     end
@@ -45,6 +45,10 @@ module AutotaskAPI
 
     def field_info(entity_name)
       savon_client.call :get_field_info, message: { psObjectType: entity_name }
+    end
+
+    def udf_info(entity_name)
+      savon_client.call :get_udf_info, message: { psTable: entity_name }
     end
   end
 end
