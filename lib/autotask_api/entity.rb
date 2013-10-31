@@ -21,7 +21,6 @@ module AutotaskAPI
       end
     end
 
-
     def self.find(id)
       raise "No initialized client!" unless client
       self.find_cache ||= {}
@@ -32,6 +31,15 @@ module AutotaskAPI
         query.expression = id
       end
       find_cache[id] ||= client.entities_for(query).first
+    end
+
+    def self.belongs_to(name)
+      name = name.to_s
+      klass = "AutotaskAPI::#{name.classify}".constantize
+      foreign_key = name.foreign_key
+      define_method name do
+        klass.find send(foreign_key)
+      end
     end
   end
 end
