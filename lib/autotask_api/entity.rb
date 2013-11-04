@@ -33,9 +33,9 @@ module AutotaskAPI
       find_cache[id] ||= client.entities_for(query).first
     end
 
-    def self.belongs_to(name)
+    def self.belongs_to(name, options = {})
       name = name.to_s
-      klass = "AutotaskAPI::#{name.classify}".constantize
+      klass = "AutotaskAPI::#{(options[:class_name] || name).to_s.classify}".constantize
       foreign_key = name.foreign_key
       define_method name do
         klass.find send(foreign_key)
