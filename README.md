@@ -17,4 +17,4 @@ Sample code:
       query.expression = 'Joe'
     end
 
-    client.query query
+    client.query = query
