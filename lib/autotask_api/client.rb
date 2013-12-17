@@ -10,6 +10,8 @@ module AutotaskAPI
         c.wsdl wsdl
         c.pretty_print_xml true
         c.log !!log
+        c.read_timeout 30
+        c.open_timeout 30
       end
       Entity.client ||= self
     end
