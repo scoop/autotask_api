@@ -52,5 +52,10 @@ module AutotaskAPI
     def udf_info(entity_name)
       savon_client.call :get_udf_info, message: { psTable: entity_name }
     end
+
+    def zone_info(user_name = nil)
+      savon_client.call :get_zone_info,
+        message: { 'UserName' => user_name || basic_auth.first }
+    end
   end
 end
