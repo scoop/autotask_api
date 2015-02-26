@@ -21,13 +21,13 @@ module AutotaskAPI
       end
     end
 
-    def self.find(id)
+    def self.find(id, field = 'id')
       raise "No initialized client!" unless client
       self.find_cache ||= {}
 
       query = AutotaskAPI::QueryXML.new do |query|
         query.entity = self.to_s.demodulize
-        query.field = 'id'
+        query.field = field
         query.expression = id
       end
       find_cache[id] ||= client.entities_for(query).first
@@ -35,10 +35,19 @@ module AutotaskAPI
 
     def self.belongs_to(name, options = {})
       name = name.to_s
-      klass = "AutotaskAPI::#{(options[:class_name] || name).to_s.classify}".constantize
+      klass = "AutotaskAPI::#{(options[:class_name] || name).to_s.classify}"
       foreign_key = name.foreign_key
       define_method name do
-        klass.find send(foreign_key)
+        klass.constantize.find send(foreign_key)
+      end
+    end
+
+    def self.has_one(name, options = {})
+      name = name.to_s
+      options.reverse_merge! foreign_key: self.to_s.foreign_key.camelize
+      klass = "AutotaskAPI::#{(options[:class_name] || name).to_s.classify}"
+      define_method name do
+        klass.constantize.find id, options[:foreign_key]
       end
     end
   end
