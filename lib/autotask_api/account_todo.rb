@@ -39,5 +39,9 @@ module AutotaskAPI
     def end_time
       Time.parse end_date_time
     end
+
+    def completed?
+      !completed_date.blank?
+    end
   end
 end
