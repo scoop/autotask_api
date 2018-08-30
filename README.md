@@ -18,6 +18,13 @@ Sample code:
     end
 
     client.query = query
+    
+    
+`find_all` usage: This will fetch all the billing items for a given invoice id.
+
+    billing_items = BillingItem.find_all(1, 'invoiceId')
+    
+  
 
 Webservices endpoints:
 ----------------------
