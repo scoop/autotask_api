@@ -3,6 +3,6 @@
 module AutotaskAPI
   # BillingItem
   class AllocationCode < Entity
-    self.fields = %i[id external_number]
+    self.fields = [:id, :external_number]
   end
 end
