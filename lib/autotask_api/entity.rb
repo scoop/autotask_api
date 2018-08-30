@@ -22,15 +22,18 @@ module AutotaskAPI
     end
 
     def self.find(id, field = 'id')
-      raise "No initialized client!" unless client
       self.find_cache ||= {}
+      find_cache[id] ||= find_all(id, field).first
+    end
 
-      query = AutotaskAPI::QueryXML.new do |query|
-        query.entity = self.to_s.demodulize
-        query.field = field
-        query.expression = id
+    def self.find_all(id, field = 'id')
+      raise 'No initialized client!' unless client
+      query = AutotaskAPI::QueryXML.new do |q|
+        q.entity = to_s.demodulize
+        q.field = field
+        q.expression = id
       end
-      find_cache[id] ||= client.entities_for(query).first
+      client.entities_for(query)
     end
 
     def self.belongs_to(name, options = {})
