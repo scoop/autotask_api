@@ -33,6 +33,18 @@ module AutotaskAPI
       find_cache[id] ||= client.entities_for(query).first
     end
 
+    def self.find_all(id, field = 'id')
+      raise 'No initialized client!' unless client
+      self.find_cache ||= {}
+
+      query = AutotaskAPI::QueryXML.new do |q|
+        q.entity = to_s.demodulize
+        q.field = field
+        q.expression = id
+      end
+      client.entities_for(query)
+    end
+
     def self.belongs_to(name, options = {})
       name = name.to_s
       klass = "AutotaskAPI::#{(options[:class_name] || name).to_s.classify}"
