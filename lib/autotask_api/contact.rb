@@ -1,6 +1,6 @@
 module AutotaskAPI
   class Contact < Entity
-    self.fields = [ :id, :first_name, :last_name, :phone, :e_mail_address, :mobile_phone, :account_id ]
+    self.fields = [ :id, :first_name, :last_name, :phone, :e_mail_address, :mobile_phone, :account_id, :active ]
 
     def full_name
       [ first_name, last_name ].join(' ')
